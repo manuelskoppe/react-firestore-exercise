@@ -1,6 +1,6 @@
 // firestoreService.js
-import { db } from './firebase'; // Asegúrate de que la ruta sea correcta
-import { collection, query, getDocs, orderBy } from 'firebase/firestore';
+import { db } from './firebase';
+import { collection, query, getDocs, orderBy, deleteDoc, doc } from 'firebase/firestore'; // Asegúrate de incluir deleteDoc y doc
 
 // Función para obtener y ordenar canciones por año
 export const getSongs = async () => {
@@ -17,5 +17,16 @@ export const getSongs = async () => {
   } catch (error) {
     console.error("Error al obtener documentos: ", error);
     return []; // Devuelve un array vacío en caso de error
+  }
+};
+
+
+// Función para borrar una canción por id
+export const deleteSong = async (songId) => {
+  try {
+    await deleteDoc(doc(db, 'songs', songId));
+    console.log("Canción borrada con éxito");
+  } catch (error) {
+    console.error("Error al borrar la canción: ", error);
   }
 };

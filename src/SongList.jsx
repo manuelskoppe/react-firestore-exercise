@@ -1,18 +1,23 @@
 // SongList.jsx
 import React, { useState, useEffect } from 'react';
-import { getSongs } from './firestoreService'; // Asegúrate de que la ruta sea correcta
+import { getSongs, deleteSong } from './firestoreService'; // Asegúrate de importar deleteSong
 
 const SongList = () => {
   const [songs, setSongs] = useState([]);
 
   useEffect(() => {
-    const fetchSongs = async () => {
-      const songsFromFirestore = await getSongs();
-      setSongs(songsFromFirestore);
-    };
-
     fetchSongs();
   }, []);
+
+  const fetchSongs = async () => {
+    const songsFromFirestore = await getSongs();
+    setSongs(songsFromFirestore);
+  };
+
+  const handleDelete = async (songId) => {
+    await deleteSong(songId);
+    fetchSongs(); // Recarga las canciones después de borrar
+  };
 
   return (
     <div>
@@ -21,6 +26,7 @@ const SongList = () => {
         {songs.map((song) => (
           <li key={song.id}>
             {song.title} - {song.artist} ({song.year})
+            <button onClick={() => handleDelete(song.id)}>Borrar</button>
           </li>
         ))}
       </ul>
