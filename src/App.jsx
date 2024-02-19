@@ -9,6 +9,10 @@ import Register from './Register';
 import Login from './Login';
 import UserProfile from './UserProfile'; // Asegúrate de importar UserProfile aquí
 
+
+
+
+
 function App() {
   return (
     <AuthProvider>
@@ -53,18 +57,7 @@ function App() {
   );
 }
 
-// Componente de la página de inicio donde se muestra el mensaje de bienvenida
-function HomePage() {
-  const { currentUser } = useAuth(); // Usa el hook useAuth para acceder al usuario actual
 
-  return (
-    <div className="text-center w-full">
-      <h1 className="text-4xl font-bold text-black" style={{ paddingLeft: '150px' }}>
-        Bienvenido al Foro {currentUser ? `: ${currentUser.email}` : ''}
-      </h1>
-    </div>
-  );
-}
 
 
 
