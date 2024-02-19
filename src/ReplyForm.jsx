@@ -29,18 +29,25 @@ const ReplyForm = ({ songId, commentId }) => {
   };
 
   return (
-    <form onSubmit={handleReplySubmit}>
+    <form onSubmit={handleReplySubmit} className="flex flex-col gap-2 my-2">
       <input
         type="text"
         value={replyText}
         onChange={(e) => setReplyText(e.target.value)}
         placeholder="Escribe una respuesta..."
+        className="px-4 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <input
         type="file"
-        onChange={(e) => setImage(e.target.files[0])} // Maneja el archivo seleccionado
+        onChange={(e) => setImage(e.target.files[0])}
+        className="file:px-4 file:py-2 file:border file:border-gray-300 file:rounded file:text-sm file:font-semibold file:bg-white file:text-blue-700 hover:file:bg-blue-50"
       />
-      <button type="submit">Responder</button>
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+      >
+        Responder
+      </button>
     </form>
   );
 };

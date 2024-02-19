@@ -32,29 +32,51 @@ const SongDetail = () => {
   }, [songId]);
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return <div className="flex justify-center items-center h-screen">Cargando...</div>;
   }
 
   if (!song) {
-    return <div>No se encontró el post.</div>;
+    return <div className="flex justify-center items-center h-screen">No se encontró el post.</div>;
   }
 
   return (
-    <div>
-      <Link to="/">Volver a la página principal</Link>
-      <h2>Detalles del Post</h2>
-      <p>Título: {song.title}</p>
-      <p>Autor: {song.artist}</p>
-      <p>Año: {song.year}</p>
-      <p>Temática: {song.genre}</p>
-      {/* Aquí se muestra el contenido del post */}
-      <p>Contenido:</p>
-      <div style={{ whiteSpace: 'pre-wrap' }}>{song.content}</div>
-      {song.imageUrl && <img src={song.imageUrl} alt="Imagen del post" style={{ maxWidth: '100%' }} />}
-      <AddCommentForm songId={songId} />
-      <CommentList songId={songId} />
+    <div className="flex flex-col justify-center items-center min-h-screen pt-30"> {/* Ajuste aquí */}
+    <div className="w-full max-w-4xl p-4">
+      <Link to="/" className="text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out mb-4 inline-block">Volver a la página principal</Link>
+      <div className="bg-white shadow-md rounded-lg overflow-hidden p-6">
+          <h2 className="text-3xl font-bold text-center mb-6">Detalles del Post</h2>
+          
+          <DetailBox label="Título" content={song.title}  />
+          <DetailBox label="Autor" content={song.artist} />
+          <DetailBox label="Año" content={song.year} />
+          <DetailBox label="Temática" content={song.genre} />
+          <DetailBox label="Contenido" content={song.content} isContent={true} />
+          
+          {song.imageUrl && (
+            <div className="flex justify-center p-4 mb-4">
+              <img src={song.imageUrl} alt="Imagen del post" className="border border-blue-500 rounded-lg max-w-md h-auto" />
+            </div>
+          )}
+
+          <div className="mb-4">
+            <AddCommentForm songId={songId} />
+          </div>
+          <div className="mb-4">
+            <CommentList songId={songId} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
+
+const DetailBox = ({ label, content, isContent, blueBackground }) => (
+  <div className={`border border-blue-500 rounded-lg p-4 mb-4 ${blueBackground ? 'bg-blue-100' : 'bg-white'}`}>
+    <p className="text-lg font-semibold">{label}: <span className="text-normal bg-white p-2 rounded">{content}</span></p>
+    {isContent && (
+      <div className="whitespace-pre-wrap text-sm rounded p-4 bg-gray-100 mt-2">{content}</div>
+    )}
+  </div>
+);
 
 export default SongDetail;

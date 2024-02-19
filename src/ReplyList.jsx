@@ -15,22 +15,30 @@ const ReplyList = ({ songId, commentId }) => {
 
   const handleDeleteReply = async (replyId) => {
     await deleteReplyFromComment(songId, commentId, replyId);
-    // Actualizar la lista de respuestas después de borrar una
     setReplies(replies.filter(reply => reply.id !== replyId));
   };
 
   return (
-    <ul>
-      {replies.map(reply => (
-        <li key={reply.id}>
-          {reply.text} - {reply.author} {/* Asegúrate de que 'author' y 'text' sean campos en tu documento de respuestas */}
-          {reply.imageUrl && (
-            <img src={reply.imageUrl} alt="Imagen de la respuesta" style={{ maxWidth: '100px', maxHeight: '100px' }} />
-          )}
-          <button onClick={() => handleDeleteReply(reply.id)}>Borrar</button>
-        </li>
-      ))}
-    </ul>
+    <div className="ml-8 border-l-2 border-gray-200 pl-4"> {/* Añade margen e indentación a las respuestas */}
+      <ul>
+        {replies.map(reply => (
+          <li key={reply.id} className="mt-2">
+            <div className="flex items-start space-x-2">
+              <p className="flex-1 text-sm">{reply.text} - <span className="text-gray-500">{reply.author}</span></p>
+              {reply.imageUrl && (
+                <img src={reply.imageUrl} alt="Imagen de la respuesta" className="max-w-xs max-h-24" />
+              )}
+              <button
+                onClick={() => handleDeleteReply(reply.id)}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-xs"
+              >
+                Borrar
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

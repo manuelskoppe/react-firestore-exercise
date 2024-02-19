@@ -79,28 +79,28 @@ function UserProfile() {
   }
 
   return (
-    <div>
-      <h1>Perfil de Usuario</h1>
+    <div className="max-w-xl mx-auto my-10 p-6 bg-white rounded shadow-md">
+      <h1 className="text-2xl font-bold text-center mb-6">Perfil de Usuario</h1>
       {profileUpdated && (
-        <div>
-          <p>Nombre: {currentUser.displayName}</p>
-          <p>Nacionalidad: {currentUser.nationality}</p>
-          <img src={currentUser.photoURL || 'url_de_imagen_por_defecto'} alt="Foto de perfil" />
+        <div className="text-center mb-6">
+          <p className="font-semibold">Nombre: {currentUser.displayName}</p>
+          <p className="font-semibold">Nacionalidad: {currentUser.nationality}</p>
+          <img src={currentUser.photoURL || 'url_de_imagen_por_defecto'} alt="Foto de perfil" className="mx-auto my-4 w-32 h-32 object-cover rounded-full" />
         </div>
       )}
-      <div>
-        <label>Nombre:</label>
-        <input type="text" value={name} onChange={handleNameChange} />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
+        <input type="text" value={name} onChange={handleNameChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       </div>
-      <div>
-        <label>Nacionalidad:</label>
-        <input type="text" value={nationality} onChange={handleNationalityChange} />
+      <div className="mb-4">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Nacionalidad:</label>
+        <input type="text" value={nationality} onChange={handleNationalityChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       </div>
-      <div>
-        <label>Foto de perfil:</label>
-        <input type="file" onChange={handleImageChange} />
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-bold mb-2">Foto de perfil:</label>
+        <input type="file" onChange={handleImageChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       </div>
-      <button onClick={saveProfile}>Guardar Cambios</button>
+      <button onClick={saveProfile} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">Guardar Cambios</button>
     </div>
   );
 }
