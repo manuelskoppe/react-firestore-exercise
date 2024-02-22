@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCommentsOfSong, deleteCommentFromSong } from './firestoreService';
+import { getCommentsOfSong, deleteCommentFromSong, addLikeToComment } from './firestoreService';
 import ReplyForm from './ReplyForm';
 import ReplyList from './ReplyList';
 
@@ -8,7 +8,7 @@ const CommentList = ({ songId, onCommentAdded }) => {
 
   const fetchComments = async () => {
     const fetchedComments = await getCommentsOfSong(songId);
-    setComments(fetchedComments);
+    setComments(fetchedComments); // Asume que fetchedComments ya incluye el conteo de "me gusta"
   };
 
   useEffect(() => {
@@ -18,6 +18,15 @@ const CommentList = ({ songId, onCommentAdded }) => {
   const handleDeleteComment = async (commentId) => {
     await deleteCommentFromSong(songId, commentId);
     fetchComments(); // Recargar comentarios después de borrar uno
+  };
+
+  const handleLike = async (commentId) => {
+    try {
+      await addLikeToComment(songId, commentId);
+      fetchComments(); // Recargar los comentarios para reflejar el cambio de "me gusta"
+    } catch (error) {
+      console.error("Error al añadir me gusta: ", error);
+    }
   };
 
   return (
@@ -31,6 +40,15 @@ const CommentList = ({ songId, onCommentAdded }) => {
             </p>
             <ReplyList commentId={comment.id} songId={songId} />
             <ReplyForm commentId={comment.id} songId={songId} />
+            <div className="flex items-center">
+              <button
+                onClick={() => handleLike(comment.id)}
+                className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded transition duration-300"
+              >
+                Me gusta
+              </button>
+              <span>{comment.likeCount || 0} me gusta</span>
+            </div>
             <button
               onClick={() => handleDeleteComment(comment.id)}
               className="mt-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
@@ -45,6 +63,3 @@ const CommentList = ({ songId, onCommentAdded }) => {
 };
 
 export default CommentList;
-
-
-

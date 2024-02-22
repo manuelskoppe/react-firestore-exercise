@@ -12,6 +12,8 @@ import {
   updateDoc
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { increment } from 'firebase/firestore';
+
 
 // Funciones existentes (ejemplos previos)...
 
@@ -163,6 +165,32 @@ export const getRepliesOfComment = async (songId, commentId) => {
   } catch (error) {
     console.error("Error al obtener respuestas: ", error);
     return []; // Return an empty array in case of error
+  }
+};
+
+// Añadir un "me gusta" a un comentario específico de una canción
+export const addLikeToComment = async (songId, commentId) => {
+  const commentRef = doc(db, 'songs', songId, 'comments', commentId);
+  try {
+    await updateDoc(commentRef, {
+      likeCount: increment(1) // Corrección para incrementar correctamente el contador de "me gusta"
+    });
+    console.log("Me gusta añadido con éxito");
+  } catch (error) {
+    console.error("Error al añadir me gusta al comentario: ", error);
+  }
+};
+
+// Función para añadir un "me gusta" a una respuesta específica
+export const addLikeToReply = async (songId, commentId, replyId) => {
+  const replyRef = doc(db, 'songs', songId, 'comments', commentId, 'replies', replyId);
+  try {
+    await updateDoc(replyRef, {
+      likeCount: increment(1) // Incrementa el contador de "me gusta" en 1
+    });
+    console.log("Me gusta añadido a la respuesta con éxito");
+  } catch (error) {
+    console.error("Error al añadir me gusta a la respuesta: ", error);
   }
 };
 
