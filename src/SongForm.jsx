@@ -83,16 +83,16 @@ function SongForm() {
             />
           </div>
           <div>
-            <label className="text-sm font-bold text-gray-600 block">Autor</label>
-            <input
-              type="text"
-              value={artist}
-              onChange={(e) => setArtist(e.target.value)}
-              placeholder="Nombre del autor"
-              className="w-full p-2 border border-gray-300 rounded mt-1"
-              required
-            />
-          </div>
+      <label className="text-sm font-bold text-gray-600 block">Autor</label>
+      <input
+        type="text"
+        value={artist} // Keep using 'artist' here for the state
+        onChange={(e) => setArtist(e.target.value)}
+        placeholder="Nombre del autor"
+        className="w-full p-2 border border-gray-300 rounded mt-1"
+        required
+      />
+    </div>
           <div>
             <label className="text-sm font-bold text-gray-600 block">Año</label>
             <input

@@ -1,17 +1,27 @@
-// AddCommentForm.jsx
+//addcomentform.jsx
+
 import React, { useState } from 'react';
 import { addCommentToSong } from './firestoreService';
 
-const AddCommentForm = ({ songId }) => {
+const AddCommentForm = ({ songId, onCommentAdded }) => {
   const [commentText, setCommentText] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!commentText) return;
-    await addCommentToSong(songId, { text: commentText });
-    setCommentText(''); // Limpiar el formulario
-    // Aquí podrías querer actualizar la lista de comentarios
+    
+    try {
+      await addCommentToSong(songId, { text: commentText });
+      setCommentText(''); // Limpiar el formulario
+      if (onCommentAdded) {
+        onCommentAdded(); // Llama al callback para indicar que se ha añadido un nuevo comentario
+      }
+    } catch (error) {
+      console.error("Error adding comment: ", error);
+      // Manejar el error según sea necesario
+    }
   };
+
   return (
     <form onSubmit={handleSubmit} className="flex items-center space-x-2">
       <input

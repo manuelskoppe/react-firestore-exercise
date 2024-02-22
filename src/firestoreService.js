@@ -74,6 +74,7 @@ export const getSongs = async () => {
     const querySnapshot = await getDocs(q);
     const songs = [];
     querySnapshot.forEach((doc) => {
+      console.log(doc.data()); // Log to see if 'author' is part of the document data
       songs.push({ id: doc.id, ...doc.data() });
     });
     return songs;
@@ -82,7 +83,6 @@ export const getSongs = async () => {
     return []; // Devuelve un array vacío en caso de error
   }
 };
-
 // Función para borrar una canción por id
 export const deleteSong = async (songId) => {
   try {
@@ -165,3 +165,4 @@ export const getRepliesOfComment = async (songId, commentId) => {
     return []; // Return an empty array in case of error
   }
 };
+
