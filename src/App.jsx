@@ -8,6 +8,8 @@ import SongDetail from './SongDetail';
 import Register from './Register';
 import Login from './Login';
 import UserProfile from './UserProfile';
+import TopLikedSongs from './TopLikedSongs';
+
 
 // Asegúrate de definir HomePage dentro de App o importarlo si está en otro archivo
 function HomePage() {
@@ -39,6 +41,7 @@ function App() {
             <Link to="/registro" className="hover:underline px-4">Registrarse</Link> | 
             <Link to="/login" className="hover:underline px-4">Iniciar Sesión</Link> |
             <Link to="/perfil" className="hover:underline px-4">Perfil</Link>
+            <Link to="/top-liked" className="hover:underline px-4">Top Likes</Link>
           </nav>
 
           <div className="flex-grow w-full" style={{ paddingTop: '5rem', paddingLeft: '550px' }}>
@@ -50,6 +53,7 @@ function App() {
               <Route path="/songs/:songId" element={<ProtectedRoute><SongDetail /></ProtectedRoute>} />
               <Route path="/nuevo-post" element={<ProtectedRoute><SongForm /></ProtectedRoute>} />
               <Route path="/perfil" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+              <Route path="/top-liked" element={<ProtectedRoute><TopLikedSongs /></ProtectedRoute>} />
             </Routes>
           </div>
         </div>

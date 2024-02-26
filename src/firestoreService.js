@@ -9,7 +9,9 @@ import {
   doc,
   addDoc,
   serverTimestamp,
-  updateDoc
+  updateDoc,
+  startAfter,
+  limit
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { increment } from 'firebase/firestore';
@@ -67,24 +69,28 @@ export const updatePostWithImageAndContent = async (postId, postData, imageUrl, 
   }
 };
 
-// Función para obtener y ordenar canciones por año
-export const getSongs = async () => {
+export const getSongs = async (lastVisible, pageSize) => {
   const songsRef = collection(db, 'songs');
-  const q = query(songsRef, orderBy('year'));
+  let q;
+  
+  if (lastVisible) {
+    q = query(songsRef, orderBy('year'), startAfter(lastVisible), limit(pageSize));
+  } else {
+    q = query(songsRef, orderBy('year'), limit(pageSize));
+  }
 
   try {
     const querySnapshot = await getDocs(q);
-    const songs = [];
-    querySnapshot.forEach((doc) => {
-      console.log(doc.data()); // Log to see if 'author' is part of the document data
-      songs.push({ id: doc.id, ...doc.data() });
-    });
-    return songs;
+    const lastVisibleDocument = querySnapshot.docs[querySnapshot.docs.length - 1];
+    const songs = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return { songs, lastVisible: lastVisibleDocument };
   } catch (error) {
     console.error("Error al obtener documentos: ", error);
-    return []; // Devuelve un array vacío en caso de error
+    return { songs: [], lastVisible: null };
   }
 };
+
+
 // Función para borrar una canción por id
 export const deleteSong = async (songId) => {
   try {
@@ -191,6 +197,19 @@ export const addLikeToReply = async (songId, commentId, replyId) => {
     console.log("Me gusta añadido a la respuesta con éxito");
   } catch (error) {
     console.error("Error al añadir me gusta a la respuesta: ", error);
+  }
+};
+
+// Función para añadir un "me gusta" a un post específico
+export const addLikeToPost = async (postId) => {
+  const postRef = doc(db, 'songs', postId); // Asumiendo que los posts están en la colección 'songs'
+  try {
+    await updateDoc(postRef, {
+      likeCount: increment(1) // Incrementa el contador de "me gusta" del post en 1
+    });
+    console.log("Me gusta añadido al post con éxito");
+  } catch (error) {
+    console.error("Error al añadir me gusta al post: ", error);
   }
 };
 
